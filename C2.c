@@ -5,15 +5,6 @@
 #include <ws2tcpip.h>
 #pragma comment (lib, "Ws2_32.lib")
 
-
-
-//[+]
-//[*]
-//[!]
-
-
-
-
 int main()
 {
 	SOCKET sock;
@@ -24,10 +15,8 @@ int main()
 	char ip_addr[] = "192.168.1.36";
 	int port = 1236;
 
-
 	WSAStartup(MAKEWORD(2,2),&wsa);
 	sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP,NULL,0,0);
-
 
 	sock_addr.sin_port = htons(port);
 	sock_addr.sin_family = AF_INET;
@@ -90,13 +79,6 @@ int main()
         printf("%s",recvserver);
 
     }
-    
-
-
-    
-    
-    
-    
     
     
     WSACleanup();
