@@ -1,3 +1,5 @@
+//tool made by B4shCr00k
+//For educational purposes only
 #include <stdio.h>
 #include <stdlib.h>
 #include <ws2tcpip.h>
