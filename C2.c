@@ -9,11 +9,11 @@ int main()
 {
 	SOCKET sock;
 	struct sockaddr_in sock_addr;
-    char recvserver[7000];
-    char command[7000];
+    	char recvserver[7000];
+   	char command[7000];
 	WSADATA wsa;
-	char ip_addr[] = "192.168.1.36";
-	int port = 1236;
+	char ip_addr[] = "0.0.0.0";
+	int port = 0000;
 
 	WSAStartup(MAKEWORD(2,2),&wsa);
 	sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP,NULL,0,0);
