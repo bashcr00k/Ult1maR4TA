@@ -128,9 +128,9 @@ void ReadFromPipe(SOCKET sock) {
         
         
         BOOL success = ReadFile(hRead_out, chBuf, sizeof(chBuf) - 1, &dwRead, NULL);
-        if (!success || dwRead == 0) break; // Stop reading if nothing was read
+        if (!success || dwRead == 0) break; 
 
-        chBuf[dwRead] = '\0'; // Null-terminate the buffer
+        chBuf[dwRead] = '\0'; 
         send(sock,chBuf,sizeof(chBuf),0);
 
     }
