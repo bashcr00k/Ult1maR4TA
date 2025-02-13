@@ -71,6 +71,8 @@ int main() {
     CloseHandle(pi.hThread);
     CloseHandle(hWrite_in);
     CloseHandle(hRead_out);
+    WSACleanup();
+    closesocket(sock);
 
    
 
@@ -134,8 +136,7 @@ void ReadFromPipe(SOCKET sock) {
         send(sock,chBuf,sizeof(chBuf),0);
 
     }
-    WSACleanup();
-    closesocket(sock);
+
 
 
 
