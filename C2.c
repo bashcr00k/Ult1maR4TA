@@ -48,7 +48,6 @@ int main()
     struct sockaddr_in client_addr;
     int clientaddrsize = sizeof(client_addr);
 
-    
     SOCKET baccept = accept(sock,(struct sockaddr*)&client_addr,&clientaddrsize);
     printf("[!] Accepting Socket\n");
     if (baccept < 0)
@@ -71,15 +70,10 @@ int main()
             printf("HACK THE WORLD!");
             break; 
         }
-
-        
-        
         Sleep(500);
         recv(baccept,recvserver,sizeof(recvserver),0);
         printf("%s",recvserver);
-
     }
-    
     
     WSACleanup();
     closesocket(sock);
