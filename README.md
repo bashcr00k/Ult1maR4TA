@@ -17,11 +17,18 @@ IMPORTANT :
 Check the realeases for older versions!!!
 I will only upload a new release after a big update !!!
 USAGE : 
+
+
 first compile both the c2 and the reverse shell >>    
-`gcc -o Ult1maR4TA.exe Ult1maR4TA.c -lws2_32`\n
+
+`gcc -o Ult1maR4TA.exe Ult1maR4TA.c -lws2_32`
+
 `gcc -o c2.exe C2.c -lws2_32 `
+
 To start the C2 :
+
 `./C2 [IP ADDR] [PORT]`
+
 Of course then the reverse shell has to be started
 
 `//////////HACK THE WORLD! HACK THE PLANET!//////////`
