@@ -15,6 +15,7 @@ Hey everyone !
 IMPORTANT : 
 
 Check the realeases for older versions!!!
+
 I will only upload a new release after a big update !!!
 USAGE : 
 
