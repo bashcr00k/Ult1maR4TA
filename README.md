@@ -12,6 +12,20 @@ Hey everyone !
 - Why c ? because c gives us direct interaction with system calls as well as the possibility of embedding assembly code which we will need later on. 
 - I am always open for new ideas and improvements !
 
+IMPORTANT : 
+
+Check the realeases for older versions!!!
+I will only upload a new release after a big update !!!
+USAGE : 
+first compile both the c2 and the reverse shell >>    
+`gcc -o Ult1maR4TA.exe Ult1maR4TA.c -lws2_32`
+`gcc -o c2.exe C2.c -lws2_32 `
+To start the C2 :
+`./C2 [IP ADDR] [PORT]`
+Of course then the reverse shell has to be started
+
+`//////////HACK THE WORLD! HACK THE PLANET!//////////`
 
 
-    //////// HAPPY HACKING !!/////////
+
+
