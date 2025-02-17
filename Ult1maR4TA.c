@@ -127,7 +127,6 @@ void ReadFromPipe(SOCKET sock) {
         memset(tempbuf, 0, sizeof(tempbuf)); 
 
         ReadFile(hRead_out, tempbuf, sizeof(tempbuf) - 1, &dwRead, NULL);
-        printf("%s itteration : %d",tempbuf,itteration);
         if (dwRead == 0) break;
 
         tempbuf[dwRead] = '\0';
